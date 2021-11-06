@@ -88,10 +88,84 @@ kubectl port-forward svc/front-end 8082:80
 
 Fork this argo samples repository like `socks-shop-infra`
 
-Then fork the `ui` repository.
+Then fork the [front-end](https://github.com/microservices-demo/front-end) repository.
 
 Create a GitHub Action to build and push to your GitHub registry. 
+- It already has a workflow. Disable it.
+
+[Push to a GitHub Container registry](https://docs.github.com/en/actions/publishing-packages/publishing-docker-images)
+
+``` yaml
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Create and publish a Docker image
+
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+```
 
 Then modify the shop manifests to use a new version of the UI.
 
+### Switching the source
+
+Delete the application definition
+
+```
+argocd app delete sock-shop
+```
+
+Then re-create with your new repository
+```
+argocd app create sock-shop \
+    --repo https://github.com/fgauna12/gitops-workshop.git \
+    --path k8s \
+    --dest-namespace sock-shop \
+    --dest-server https://kubernetes.default.svc \
+    --directory-recurse --sync-policy auto
+
+```
+
+### Making a change
+
+We're going to change the "Offer of the day" button from green to blue.
 
