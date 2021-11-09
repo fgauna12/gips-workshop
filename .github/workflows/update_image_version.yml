@@ -26,5 +26,5 @@ jobs:
         working-directory: k8s
       
       - run: |
-          git add . -m "Update image verstion to ${{ github.event.client_payload.full_image_tag }}"
+          git commit -am "Update image verstion to ${{ github.event.client_payload.full_image_tag }}"
           git push
