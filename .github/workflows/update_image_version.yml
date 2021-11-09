@@ -25,6 +25,6 @@ jobs:
         name: Set image tag via kustomize
         working-directory: k8s
       
-      - run: |
-          git commit -am "Update image verstion to ${{ github.event.client_payload.full_image_tag }}"
-          git push
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Updating image to ${{ github.event.client_payload.full_image_tag }}
