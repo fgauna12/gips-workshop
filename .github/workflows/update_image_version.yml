@@ -21,4 +21,4 @@ jobs:
       - uses: actions/checkout@v2
       
       - run: |
-          kustomize edit set image weaveworksdemos/front-end=${{ github.event.client_payload.tag }}
+          kustomize edit set image weaveworksdemos/front-end=${{ github.event.client_payload.full_image_tag }}
