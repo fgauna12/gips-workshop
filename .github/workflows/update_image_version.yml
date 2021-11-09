@@ -22,3 +22,8 @@ jobs:
       
       - run: |
           kustomize edit set image weaveworksdemos/front-end=${{ github.event.client_payload.full_image_tag }}
+        name: Set image tag via kustomize
+      
+      - run: |
+          git add . -m "Update image verstion to ${{ github.event.client_payload.full_image_tag }}"
+          git push
