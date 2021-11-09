@@ -31,4 +31,4 @@ kind: Kustomization
 images:
 - name: weaveworksdemos/front-end
   newName: ghcr.io/fgauna12/front-end
-  newTag: sha-9a0f095
+  newTag: sha-80c2a01
