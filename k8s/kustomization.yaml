@@ -26,3 +26,9 @@ resources:
 - base/user-db-svc.yaml
 - base/user-dep.yaml
 - base/user-svc.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: weaveworksdemos/front-end
+  newName: ghcr.io/fgauna12/front-end
+  newTag: sha-9a0f095
