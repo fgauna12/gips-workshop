@@ -5,7 +5,7 @@ name: Update Kustomize Version
 # Controls when the workflow will run
 on:
   repository_dispatch:
-    types: [update-image]
+    types: [updated-image]
     
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
