@@ -28,7 +28,3 @@ resources:
 - base/user-svc.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-images:
-- name: weaveworksdemos/front-end
-  newName: ghcr.io/fgauna12/front-end
-  newTag: sha-85dab21
